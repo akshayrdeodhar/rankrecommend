@@ -19,7 +19,7 @@
 	</head>
 
 	<body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4 fixed-top">
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4 fixed-top">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
 						<a class="nav-link" href="/">Home</a>
@@ -32,11 +32,19 @@
 					</li>
 				</ul>
 		</nav>
-		<div class="jumbotron">
-			<h1 class="display-4">RankRecommend<h1>
-			<hr class="my-4">
-			<p>A link recommender for directed social networks</p>
-			<p class="lead"> Applied to the github follow graph. Also supports custom graph text files</p>
+
+		<div class="text-center">
+
+		<form class="form-signin" action="/result" method="POST">
+			<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+			<h1 class="h3 mb-3 font-weight-normal">GitRecommend</h1>
+			<div class="container">
+				<label for="inputEmail" class="sr-only">Github Username</label>
+				<input type="text" id="inputusername" class="form-control" name="inputusername"  placeholder="Username" required autofocus>
+			</div>
+			<br>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Recommend!</button>
+		</form>
 		</div>
 	</body>
 </html>

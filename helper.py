@@ -23,6 +23,11 @@ def build_graph(root, graphsize = 1000):
 
         return gitgraph
 
+    url1 = "https://github.com/" + root
+    userpage = rq.get(url1)
+    if userpage.status_code != 200:
+        return False
+
 
     while len(gitgraph) < graphsize:
         newnode = unvisited[0]
@@ -82,8 +87,9 @@ def get_recommendations(graph, node, n = 10):
     i = 0
 
     while len(recommends) < n:
-        if not graph.has_edge(node, top_recommendations[i]) and node != top_recommendations[i]:
-            recommends.append((top_recommendations[i], recommendation_list[top_recommendations[i]]))
-        i += 1
+        if i < len(top_recommendations)
+            if not graph.has_edge(node, top_recommendations[i]) and node != top_recommendations[i]:
+                recommends.append((top_recommendations[i], recommendation_list[top_recommendations[i]]))
+            i += 1
 
     return recommends
