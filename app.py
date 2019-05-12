@@ -1,4 +1,6 @@
+#!flask/usr/bin/python3
 from flask import Flask, render_template, request
+from helper import build_graph
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -10,5 +12,5 @@ def main_screen():
 @app.route('/result', methods = ['POST'])
 def narcissism_recommend():
     name = request.form['inputusername']
-    return_stuff = [(name, 1) for i in range(10)]
+    build_graph(name)
     return render_template('result.html', recommends = return_stuff)
