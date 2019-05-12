@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="../../../../favicon.ico">
+
+		<title>GitRecommend</title>
+
+		<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
+
+		<!-- Bootstrap core CSS -->
+		<link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<!--link href="../static/frontpage.css" rel="stylesheet"-->
+	</head>
+
+	<body ="text-center">
+		<br>
+		<div class="container">
+			<table class="table table-striped table-dark">
+				<thead>
+					<tr>
+						<th scope="col">Rank</th>
+						<th scope="col">User</th>
+						<th scope="col">Score</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in recommends %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>{{ user[0] }}</td>
+						<td>{{ user[1] }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="container"  align="center">
+			<form action="/" method="POST">
+				<button type="submit" class="btn btn-primary btn-lg">Home</button>
+			</form>
+		</div>
+	</body>
+</html>
