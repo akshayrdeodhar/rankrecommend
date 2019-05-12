@@ -2,3 +2,5 @@ numpy
 networkx
 flask
 jinja2
+requests
+bs4
