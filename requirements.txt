@@ -1,0 +1,4 @@
+numpy
+networkx
+flask
+jinja2
