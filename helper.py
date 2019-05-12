@@ -87,7 +87,7 @@ def get_recommendations(graph, node, n = 10):
     i = 0
 
     while len(recommends) < n:
-        if i < len(top_recommendations)
+        if i < len(top_recommendations):
             if not graph.has_edge(node, top_recommendations[i]) and node != top_recommendations[i]:
                 recommends.append((top_recommendations[i], recommendation_list[top_recommendations[i]]))
             i += 1

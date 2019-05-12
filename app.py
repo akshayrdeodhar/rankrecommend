@@ -22,6 +22,6 @@ def recommendations_list():
     name = request.form['inputusername']
     user_graph = build_graph(name)
     if user_graph == False:
-        return render_template("error.html")
+        return render_template("error.html", mainerror = "This github user", suberror = "Does not exist")
     return_stuff = get_recommendations(user_graph, name)
     return render_template('result.html', recommends = return_stuff)
