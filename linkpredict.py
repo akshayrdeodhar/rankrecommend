@@ -97,7 +97,7 @@ def rooted_pagerank_solve(g, node, d):
     return eigen_dict
 
 
-def rooted_pagerank(g, node, d = 0.85, epsilon = 1e-5):
+def rooted_pagerank(g, node, d = 0.85, epsilon = 1e-4):
     """ Returns rooted pagerank vector
     g graph
     node root
@@ -120,8 +120,6 @@ def rooted_pagerank(g, node, d = 0.85, epsilon = 1e-5):
     rootvec = np.zeros(len(g))
     rootvec[root] = 1
 
-    d = 0.85
-
     vect = np.random.rand(n)
     vect = vect / np.linalg.norm(vect, ord = 1)
     last_vect = np.ones(n) * 100 # to ensure that does not hit epsilon randomly in first step
@@ -131,12 +129,15 @@ def rooted_pagerank(g, node, d = 0.85, epsilon = 1e-5):
         last_vect = vect.copy()
         vect = d * np.matmul(m, vect) + (1 - d) * rootvec
         iterations += 1
+        print(iterations)
 
     eigenvector = vect / np.linalg.norm(vect, ord = 1)
 
     eigen_dict = {}
     for i in range(len(ordered_nodes)):
         eigen_dict[ordered_nodes[i]] = eigenvector[i]
+
+    print("Bye")
 
     return eigen_dict
 

@@ -1,64 +1,89 @@
+from linkpredict import rooted_pagerank
 from bs4 import BeautifulSoup
 import requests as rq
 import networkx as nx
+import os
+import csv
+
 
 def build_graph(root, graphsize = 1000):
-
-    root = "abhisheklolage"
-    filename = "huge_graph.txt"
-
-    unvisited = [root]
     visited = set()
-
+    unvisited = [root]
     gitgraph = nx.DiGraph()
+    filename = "data/" + str(root) + "_graph.txt"
 
-    while len(gitgraph) < 1000:
-	newnode = unvisited[0]
+    if os.path.isfile(filename):
+        fp = open(filename, "r")
+        reader = csv.reader(fp, delimiter = "\t")
+        gitgraph = nx.DiGraph()
+        for line in reader:
+            gitgraph.add_edge(line[0], line[1])
 
+        fp.close()
 
-	url = "https://github.com/" + newnode + "/followers"
-	print("Visiting " + url)
-	resource = rq.get(url)   
-	follower_raw = resource.text
-	follower_soup = BeautifulSoup(follower_raw)
-	preprocess_list = follower_soup.find_all("a", class_ = "d-inline-block")
-	    try:
-		names = [user['href'][1:] for user in preprocess_list]
-		# print(names)
-		for hrudaya in names[2:]:
-		    gitgraph.add_edge(hrudaya, newnode)
-			if hrudaya not in visited:
-			    unvisited.append(hrudaya)
-	    except:
-		print("Unable to find folowers for " + newnode)
+        return gitgraph
 
 
-	url2 = "https://github.com/" + newnode + "/following"
-	print("Visiting " + url2)
-	resource = rq.get(url2)
-	follower_raw = resource.text
-	follower_soup = BeautifulSoup(follower_raw)
-	preprocess_list = follower_soup.find_all("a", class_ = "d-inline-block")
-	try:
-	    names = [user['href'][1:] for user in preprocess_list]
-	    # print(names)
-	    for amala in names[2:]:
-		gitgraph.add_edge(newnode, amala)
-		if amala not in visited:
-		    unvisited.append(amala)
-	except:
-	    print("Unable to find folowees for " + newnode)
+    while len(gitgraph) < graphsize:
+        newnode = unvisited[0]
+        
+        url2 = "https://github.com/" + newnode + "/following"
+        print("Visiting " + url2)
+        resource = rq.get(url2)
+        follower_raw = resource.text
+        follower_soup = BeautifulSoup(follower_raw)
+        preprocess_list = follower_soup.find_all("a", class_ = "d-inline-block")
+        try:
+            names = [user['href'][1:] for user in preprocess_list]
+            print(names)
+            for amala in names[2:]:
+                gitgraph.add_edge(newnode, amala)
+                if amala not in visited:
+                    unvisited.append(amala)
+        except:
+            print("Unable to find folowees for " + newnode)
+    
+        visited.add(unvisited.pop(0))
+    
+        url = "https://github.com/" + newnode + "/followers"
+        print("Visiting " + url)
+        resource = rq.get(url)
+        follower_raw = resource.text
+        follower_soup = BeautifulSoup(follower_raw)
+        preprocess_list = follower_soup.find_all("a", class_ = "d-inline-block")
+        try:
+            names = [user['href'][1:] for user in preprocess_list]
+            # print(names)
+            for hrudaya in names[2:]:
+                gitgraph.add_edge(hrudaya, newnode)
+                if hrudaya not in visited:
+                    unvisited.append(hrudaya)
+        except:
+            print("Unable to find folowers for " + newnode)
+    
+    
+        
+    github_graph = list(gitgraph.edges())
+    links = open(filename, "w")
 
-	visited.add(unvisited.pop(0))
+    for link in github_graph:
+        links.write(link[0] + "\t" + link[1] + "\n")
+    
+    links.close()
 
+    return gitgraph
+    
+def get_recommendations(graph, node, n = 10):
+    recommendation_list = rooted_pagerank(graph, node, 0.3, 1e-6)
+    get_val = lambda key: recommendation_list[key]
+    top_recommendations = sorted(recommendation_list.keys(), key = get_val, reverse = True)
+    recommends = []
+    found = 0
+    i = 0
 
-	github_graph = list(gitgraph.edges())
+    while len(recommends) < n:
+        if not graph.has_edge(node, top_recommendations[i]) and node != top_recommendations[i]:
+            recommends.append((top_recommendations[i], recommendation_list[top_recommendations[i]]))
+        i += 1
 
-	links = open(filename, "w")
-
-	for link in github_graph:
-	    links.write(link[0] + "\t" + link[1] + "\n")
-
-	links.close()
-
-
+    return recommends
