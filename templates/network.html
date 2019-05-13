@@ -20,31 +20,36 @@
 
 	<body>
 		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4 fixed-top">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="/">Home</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/user">Github User</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/graph">Network</a>
-					</li>
-				</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/user">Github User</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/graph">Network</a>
+				</li>
+			</ul>
 		</nav>
 
 		<div class="text-center">
 
-		<form class="form-signin" action="/result" method="POST">
-			<img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-			<h1 class="h3 mb-3 font-weight-normal">GitRecommend</h1>
-			<div class="container">
-				<label for="inputEmail" class="sr-only">Github Username</label>
-				<input type="text" id="inputusername" class="form-control" name="inputusername"  placeholder="Username" required autofocus>
-			</div>
-			<br>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Recommend!</button>
-		</form>
-		</div>
+			<form  action="/graphresult" method="POST" enctype="multipart/form-data">
+				<img class="mb-4" src="static/images/saruman.png"  alt="" width="72" height="72">
+				<h1 class="h3 mb-3 font-weight-normal">GraphRecommend</h1>
+				<div class="container">
+					<label for="rootnode" class="sr-only">Root Node</label>
+					<input type="text" id="inputusername" class="form-control" name="inputusername"  placeholder="Root Node" required autofocus>
+				</div>
+				<br>
+				<span class="control-fileupload">
+					<label for="file">Choose a file :</label>
+					<input type="file" name="file">
+				</span>
+				<br>
+				<br>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Recommend!</button>
+			</form>
 	</body>
 </html>

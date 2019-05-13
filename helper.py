@@ -10,12 +10,12 @@ def build_graph(root, graphsize = 1000):
     visited = set()
     unvisited = [root]
     gitgraph = nx.DiGraph()
+    gitgraph.add_node(root)
     filename = "data/" + str(root) + "_graph.txt"
 
     if os.path.isfile(filename):
         fp = open(filename, "r")
         reader = csv.reader(fp, delimiter = "\t")
-        gitgraph = nx.DiGraph()
         for line in reader:
             gitgraph.add_edge(line[0], line[1])
 
@@ -29,18 +29,18 @@ def build_graph(root, graphsize = 1000):
         return False
 
 
-    while len(gitgraph) < graphsize:
+    while len(gitgraph) < graphsize and len(unvisited) != 0:
         newnode = unvisited[0]
         
         url2 = "https://github.com/" + newnode + "/following"
-        print("Visiting " + url2)
+        # print("Visiting " + url2)
         resource = rq.get(url2)
         follower_raw = resource.text
         follower_soup = BeautifulSoup(follower_raw)
         preprocess_list = follower_soup.find_all("a", class_ = "d-inline-block")
         try:
             names = [user['href'][1:] for user in preprocess_list]
-            print(names)
+            # print(names)
             for amala in names[2:]:
                 gitgraph.add_edge(newnode, amala)
                 if amala not in visited:
@@ -51,7 +51,7 @@ def build_graph(root, graphsize = 1000):
         visited.add(unvisited.pop(0))
     
         url = "https://github.com/" + newnode + "/followers"
-        print("Visiting " + url)
+        # print("Visiting " + url)
         resource = rq.get(url)
         follower_raw = resource.text
         follower_soup = BeautifulSoup(follower_raw)
@@ -82,6 +82,7 @@ def get_recommendations(graph, node, n = 10):
     recommendation_list = rooted_pagerank(graph, node, 0.3, 1e-6)
     get_val = lambda key: recommendation_list[key]
     top_recommendations = sorted(recommendation_list.keys(), key = get_val, reverse = True)
+    print("Cleared Checkpoint")
     recommends = []
     found = 0
     i = 0
@@ -93,3 +94,17 @@ def get_recommendations(graph, node, n = 10):
             i += 1
 
     return recommends
+
+def build_graph_from_file(file_object):
+    file_object.save(os.path.join('/home/akshay/Desktop/COEP/SY/PPL/project/app/', "temp.sv"))
+    file_object = open("temp.sv", "r")
+    graph = nx.DiGraph()
+    reader = csv.reader(file_object, delimiter = "\t")
+    for line in reader:
+        graph.add_edge(line[0], line[1])
+
+    file_object.close()
+
+    return graph
+
+
