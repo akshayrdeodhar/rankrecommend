@@ -93,6 +93,8 @@ def get_recommendations(graph, node, n = 10):
                 recommends.append((top_recommendations[i], recommendation_list[top_recommendations[i]]))
             i += 1
 
+    print("recommending")
+
     return recommends
 
 def build_graph_from_file(file_object):

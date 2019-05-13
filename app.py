@@ -27,6 +27,8 @@ def recommendations_list():
 
     return_stuff = get_recommendations(user_graph, name)
 
+    print(return_stuff)
+
     return render_template('result.html', recommends = return_stuff)
 
 @app.route('/graphresult', methods = ['POST'])
@@ -37,6 +39,7 @@ def custom_recommendation_list():
     if root_node not in network_graph.nodes():
         return render_template('error.html', mainerror = "The specified node", suberror = "Is not a part of the uploaded graph file")
     return_stuff = get_recommendations(network_graph, root_node)
+    print(return_stuff)
 
     return render_template('result.html', recommends = return_stuff)
 
