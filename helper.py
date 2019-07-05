@@ -98,7 +98,8 @@ def get_recommendations(graph, node, n = 10):
     return recommends
 
 def build_graph_from_file(file_object):
-    file_object.save(os.path.join('/home/akshay/Desktop/COEP/SY/PPL/project/app/', "temp.sv"))
+    dirpath = os.getcwd()
+    file_object.save(os.path.join(dirpath, "temp.sv"))
     file_object = open("temp.sv", "r")
     graph = nx.DiGraph()
     reader = csv.reader(file_object, delimiter = "\t")
